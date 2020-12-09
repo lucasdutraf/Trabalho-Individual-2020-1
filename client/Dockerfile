@@ -1,22 +1,15 @@
 FROM node:lts-alpine
 
-# instala um servidor http simples para servir conteúdo estático
-RUN npm install -g http-server
+RUN mkdir /app
 
-# faz da pasta 'app' o diretório atual de trabalho
 WORKDIR /app
 
-# copia os arquivos 'package.json' e 'package-lock.json' (se disponível)
-COPY package*.json ./
+COPY package.json /app
 
-# instala dependências do projeto
-RUN npm install
+COPY yarn.lock /app
 
-# copia arquivos e pastas para o diretório atual de trabalho (pasta 'app')
-COPY . .
+RUN yarn
 
-# compila a aplicação de produção com minificação
-RUN npm run build
+COPY . /app
 
-EXPOSE 8080
-CMD [ "http-server", "dist" ]
+CMD ["yarn", "dev"]
