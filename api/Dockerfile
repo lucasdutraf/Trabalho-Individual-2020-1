@@ -1,20 +1,20 @@
 # Use the official image as a parent image.
 FROM ruby:2.5.7
 
-ENV BUNDLER_VERSION=2.1.4
-
 RUN apt-get update -qq && apt-get install -y build-essential libpq-dev\
     nodejs postgresql-client
 
-RUN mkdir /app
+WORKDIR /api
 
-WORKDIR /app
+COPY Gemfile /api/Gemfile
 
-COPY ./Gemfile /app
+COPY Gemfile.lock /api/Gemfile.lock
+
+RUN gem install bundler
 
 RUN bundle install
 
-COPY . /app
+COPY . /api
 
 COPY entrypoint.sh /usr/bin/
 
@@ -24,5 +24,4 @@ ENTRYPOINT ["entrypoint.sh"]
 
 EXPOSE 3000
 
-# Start the main process.
 CMD ["rails", "server", "-b", "0.0.0.0"]
