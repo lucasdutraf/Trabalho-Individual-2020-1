@@ -1,15 +1,17 @@
 FROM node:lts-alpine
 
+EXPOSE 8080
+
 RUN mkdir /app
 
 WORKDIR /app
 
 COPY package.json /app
 
-COPY yarn.lock /app
+# ENV PATH /app/node_modules/.bin:$PATH
 
-RUN yarn
+COPY yarn.lock /app
 
 COPY . /app
 
-CMD ["yarn", "dev"]
+RUN chmod +x ./start-project.sh
