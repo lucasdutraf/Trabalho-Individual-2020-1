@@ -15,6 +15,7 @@
 
 ## Como utilizar
 ### Docker
+_Os comandos precisam de permissão de administrador_
 1. ```make build```
 2. ```make run```
    
